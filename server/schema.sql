@@ -1,13 +1,30 @@
+DROP DATABASE IF EXISTS chat;
+
 CREATE DATABASE chat;
 
 USE chat;
 
 CREATE TABLE messages (
   /* Describe your table here.*/
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  body VARCHAR(255),
+  created_at DATETIME(0),
+  PRIMARY KEY (ID)
 );
 
+CREATE TABLE users (
+  /* Describe your table here.*/
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255),
+  PRIMARY KEY (ID)
+);
 /* Create other tables and define schemas for them here! */
-
+CREATE TABLE rooms (
+  /* Describe your table here.*/
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255),
+  PRIMARY KEY (ID)
+);
 
 
 
