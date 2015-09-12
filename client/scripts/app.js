@@ -90,7 +90,7 @@ var MessageView = Backbone.View.extend({
     this.model.on('change', this.render, this);
   },
 
-  template: _.template('<div class="chat" data-id="<%- objectId %>"> \
+  template: _.template('<div class="chat" data-id="<%- id %>"> \
                           <div class="user"><%- username %></div> \
                           <div class="text"><%- text %></div> \
                         </div>'),
@@ -114,10 +114,10 @@ var MessagesView = Backbone.View.extend({
   },
 
   renderMessage: function(message) {
-    if (!this.onscreenMessages[message.get('objectId')]) {
+    if (!this.onscreenMessages[message.get('id')]) {
       var messageView = new MessageView({model: message});
       this.$el.prepend(messageView.render());
-      this.onscreenMessages[message.get('objectId')] = true;
+      this.onscreenMessages[message.get('id')] = true;
     }
   }
 
@@ -163,15 +163,15 @@ app = {
     renderMessage: function(message) {
       var $user = $("<div>", {class: 'user'}).text(message.username);
       var $text = $("<div>", {class: 'text'}).text(message.text);
-      var $message = $("<div>", {class: 'chat', 'data-id': message.objectId }).append($user, $text);
+      var $message = $("<div>", {class: 'chat', 'data-id': message.id }).append($user, $text);
       return $message;
     },
 
     displayMessage: function(message) {
-      if (!app.onscreenMessages[message.objectId]) {
+      if (!app.onscreenMessages[message.id]) {
         var $html = app.renderMessage(message);
         $('#chats').prepend($html);
-        app.onscreenMessages[message.objectId] = true;
+        app.onscreenMessages[message.id] = true;
       }
     },
 
@@ -203,7 +203,7 @@ app = {
         data: JSON.stringify(message),
         contentType: 'application/json',
         success: function(json) {
-          message.objectId = json.objectId;
+          message.id = json.id;
           app.displayMessage(message);
         },
         complete: function() {

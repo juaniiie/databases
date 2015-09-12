@@ -23,29 +23,18 @@ module.exports = {
       models.messages.get(function(messages){
         res.writeHead(statusCode, headers);
         res.end(JSON.stringify({results: messages}));
-        console.log("GET WORKS");
       });
 
     }, // a function which handles a get request for all messages
     post: function (req, res) { // a function which handles posting a message to the database
-      //1) Get a json data from request
-      //2) Pass it into the model
-      //3) Model will insert it into the DB
-      //4) End the response
-
-      var body = "";
-      res.on('data', function(chunk){
-        body += chunk;
-      });
-      res.on('end', function() {
-        var newMessage = JSON.parse(body);
+        var newMessage = req.body;
         var postCallback = function(){
-          var statusCode = 302;
+          var statusCode = 201;
           res.writeHead(statusCode, headers);
           res.end();
         };
-        model.messages.post(newMessage.username, newMessage.message, newMessage.roomname, postCallback);
-      });
+        newMessage.roomname = newMessage.roomname || '';
+        models.messages.post(newMessage.username, newMessage.text, newMessage.roomname, postCallback);
     }
 
   },
