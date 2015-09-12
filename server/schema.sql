@@ -18,14 +18,16 @@ CREATE TABLE users (
   /* Describe your table here.*/
   id int(11) NOT NULL AUTO_INCREMENT,
   name VARCHAR(255),
-  PRIMARY KEY (ID)
+  PRIMARY KEY (ID),
+  UNIQUE (name)
 );
 /* Create other tables and define schemas for them here! */
 CREATE TABLE rooms (
   /* Describe your table here.*/
   id int(11) NOT NULL AUTO_INCREMENT,
   name VARCHAR(255),
-  PRIMARY KEY (ID)
+  PRIMARY KEY (ID),
+  UNIQUE (name)
 );
 
 

@@ -19,7 +19,32 @@ module.exports = {
       });
 
     }, // a function which produces all the messages
-    post: function (username, body, room) {} // a function which can be used to insert a message into the database
+    post: function (username, body, roomname) {
+      // var idUserQuery = 'select id from users u where u.name = "' + username + '"';
+      // db.query(idUserQuery, [], function(err, userIDs){
+      //   if (err){
+      //     throw err;
+      //   }
+      //   else if(userIDs.length === 0){
+      //     //Make a new userID
+      //   }
+      //   else{
+      //     //Find room ID
+      //     var idRoomQuery = 'select id from rooms r where r.name = "' + roomname + '"';
+      //     db.query(idRoomQuery,[], function(err, roomIDs){
+      //       if(err)
+      //     })
+      //   }
+      var insertUserQuery = 'insert into users (name) values ("'+ username +'")';
+      var insertRoomQuery = 'insert into rooms (name) values ("'+ roomname +'")';
+
+      var getUserQuery = '(select id from users where name = "' + username + '")';
+      var getRoomQuery = '(select id from rooms where name = "' + roomname + '")';
+
+      var messageQuery = 'insert into messages (body,uid,rid) values ("'+body+'",' + getUserQuery + ',' + getRoomQuery +')';
+
+
+    } // a function which can be used to insert a message into the database
   },
 
   users: {
