@@ -43,10 +43,9 @@ module.exports = {
 
       var messageQuery = 'insert into messages (body,uid,rid) values ("'+body+'",' + getUserQuery + ',' + getRoomQuery +')';
 
-
-    } // a function which can be used to insert a message into the database
+     // a function which can be used to insert a message into the database
+    }
   },
-
   users: {
     // Ditto as above.
     get: function () {},

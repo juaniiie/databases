@@ -1,0 +1,14 @@
+{
+  "name": "chatterbox-client",
+  "version": "0.0.0",
+  "homepage": "https://github.com/dkoleary88/2015-08-chatterbox-server",
+  "authors": [
+    "Hack Reactor Students <accounts@hackreactor.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "backbone": "~1.2.3",
+    "underscore": "~1.8.3",
+    "jquery": "~2.1.4"
+  }
+}

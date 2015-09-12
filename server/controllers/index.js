@@ -45,7 +45,8 @@ module.exports = {
           res.end();
         };
         model.messages.post(newMessage.username, newMessage.message, newMessage.roomname, postCallback);
-      }
+      });
+    }
 
   },
 
