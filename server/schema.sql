@@ -7,28 +7,22 @@ USE chat;
 CREATE TABLE messages (
   /* Describe your table here.*/
   id int(11) NOT NULL AUTO_INCREMENT,
+  userid int NOT Null,
   text VARCHAR(255),
-  created_at timestamp NOT NULL DEFAULT current_timestamp,
-  PRIMARY KEY (ID),
-  uid int(11),
-  rid int (11)
+  -- created_at timestamp NOT NULL DEFAULT current_timestamp,
+  roomname VARCHAR(20),
+  PRIMARY KEY (ID)
+  
 );
 
 CREATE TABLE users (
   /* Describe your table here.*/
   id int(11) NOT NULL AUTO_INCREMENT,
-  username VARCHAR(255),
-  PRIMARY KEY (ID),
-  UNIQUE (username)
+  username VARCHAR(255) NOT NULL,
+  PRIMARY KEY (ID)
+  -- UNIQUE (username)
 );
-/* Create other tables and define schemas for them here! */
-CREATE TABLE rooms (
-  /* Describe your table here.*/
-  id int(11) NOT NULL AUTO_INCREMENT,
-  roomname VARCHAR(255),
-  PRIMARY KEY (ID),
-  UNIQUE (roomname)
-);
+
 
 
 

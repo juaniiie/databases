@@ -2,44 +2,44 @@ var db = require('../db');
 
 module.exports = {
   messages: {
-    get: function (callback) {
-      var query = 'select m.id, u.username, m.text, m.created_at, r.roomname \
-      from messages m inner join rooms r on (m.rid=r.id) inner join users u on (m.uid=u.id)';
 
-      db.query(query, [], function(err, results){
-        if(err){
-          throw err;
-        }
-        console.log(results);
+    get: function (callback) {
+      var queryStr = "select messages.id, messages.text, messages.roomname, users.username from messages \
+                      left outer join users on (messages.userid = user.id) \
+                      order by messages.id desc";
+
+      db.query(queryStr, function(err, results){
         callback(results);
       });
+    },
+    post: function (params, callback) {
+      var queryStr = "insert into messages(text, userid, roomname) \
+                      values (?,(select id from users where username = ? limit 1), ?)";
 
-    }, // a function which produces all the messages
-    post: function (username, text, roomname, callback) {
-      var insertUserQuery = 'insert into users (username) values ("'+ username +'")';
-      var insertRoomQuery = 'insert into rooms (roomname) values ("'+ roomname +'")';
-
-      var getUserQuery = '(select id from users where username = "' + username + '")';
-      var getRoomQuery = '(select id from rooms where roomname = "' + roomname + '")';
-
-      var messageQuery = 'insert into messages (text,uid,rid) values ("'+ text +'",' + getUserQuery + ',' + getRoomQuery +')';
-
-     // a function which can be used to insert a message into the database
-     db.query(insertUserQuery, [], function(err, results){
-        db.query(insertRoomQuery, [], function(err, results){
-          db.query(messageQuery, [], function(err, results){
-            if (err){
-              throw err;
-            }
-            callback();
-          });
-        });
-     });
+      console.log("query started");
+      db.query(queryStr, params, function(err,results){
+          console.log(params);
+          console.log(err);
+          console.log("query done.");
+          callback(results);
+      });
     }
   },
+
   users: {
     // Ditto as above.
-    get: function () {},
-    post: function () {}
+    get: function (callback) {
+      var queryStr = "select * from users";
+      db.query(queryStr, function(err, results){
+        callback(results);
+      });
+    },
+    post: function (params, callback) {
+      var queryStr = "insert into users (username) values (?)"; 
+      db.query(queryStr, params, function(err,results){
+          callback(results);
+      });
+    }
   }
+
 };

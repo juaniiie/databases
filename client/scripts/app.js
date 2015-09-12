@@ -41,8 +41,8 @@ var Messages = Backbone.Collection.extend({
 
   parse: function(response, options) {
     var results = [];
-    for (var i = response.results.length-1; i >= 0; i--) {
-      results.push(response.results[i]);
+    for (var i = response.length-1; i >= 0; i--) {
+      results.push(response[i]);
     }
     return results;
   }

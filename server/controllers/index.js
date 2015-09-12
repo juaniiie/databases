@@ -1,48 +1,53 @@
-var models = require('../models');
-
-var defaultCorsHeaders = {
-  "access-control-allow-origin": "*",
-  "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "access-control-allow-headers": "content-type, accept",
-  "access-control-max-age": 10 // Seconds.
-};
-
-var headers = defaultCorsHeaders;
-headers['Content-Type'] = "text/plain";
+var db = require('../db');
+var User = db.User;
+var Message = db.Message;
 
 module.exports = {
   messages: {
     get: function (req, res) {
-      //1) Call meesages model get function
-      //2) Receives an array of objects
-      //3) Convert an array of objects into string JSON
-      //4) Put it into the response
-      //5) End the response
-      var statusCode = 200;
 
-      models.messages.get(function(messages){
-        res.writeHead(statusCode, headers);
-        res.end(JSON.stringify({results: messages}));
-      });
-
+      Message.findAll({ include: [User] })
+        .then(function(results){
+            //error
+            res.json(results);
+  
+        });
+      
     }, // a function which handles a get request for all messages
     post: function (req, res) { // a function which handles posting a message to the database
-        var newMessage = req.body;
-        var postCallback = function(){
-          var statusCode = 201;
-          res.writeHead(statusCode, headers);
-          res.end();
+     User.findOrCreate({where : {username: req.body['username']}})
+      .then(function(users) {
+        var params = {
+          text: req.body['text'], 
+          roomname:req.body['roomname']
         };
-        newMessage.roomname = newMessage.roomname || '';
-        models.messages.post(newMessage.username, newMessage.text, newMessage.roomname, postCallback);
-    }
 
+        Message.create(params)
+          .then(function(message){
+            console.log(users[0]);
+            message.setUser(users[0]);
+            res.sendStatus(201);
+        });
+      });
+    }  
   },
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
-    post: function (req, res) {}
+    get: function (req, res) {
+      User.findAll()
+        .then(function(results){
+            //error
+            res.json(results);
+        });
+        
+    },
+    post: function (req, res) {
+      User.create({username: req.body['username']})
+        .then(function(user){
+          res.sendStatus(201);
+        });
+    }
   }
 };
 
